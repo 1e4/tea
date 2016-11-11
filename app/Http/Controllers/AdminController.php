@@ -6,6 +6,7 @@ use App\Drinks;
 use App\Http\Requests\StorePerson;
 use App\Http\Requests\StoreRound;
 use App\Round;
+use App\RoundUser;
 use App\TeaLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,17 +26,26 @@ class AdminController extends Controller
      */
     public function createPerson(StorePerson $request)
     {
+        // 2) Add people to the round and set their drink type probably should do this by ID's in future
         $person         = new Drinks();
         $person->user   = $name = $request->input('person');
         $person->drink  = $drink = $request->input('drink');
         $person->sugar  = $request->input('sugar');
         $person->milk   = $request->input('milk');
+
+        // 3) The frequency they get chosen
         $person->busy   = $request->input('busy');
         $person->save();
 
         return back()->with('success', $name . ' has been added with a preferred drink of ' . $drink);
     }
 
+    /**
+     * Create a new round of drinks
+     *
+     * @param StoreRound $request
+     * @return mixed
+     */
     public function createRound(StoreRound $request)
     {
 
@@ -45,6 +55,7 @@ class AdminController extends Controller
 
         $count = 0;
 
+        // The randomizer
         $chosen = function() use($length, $people, &$chosen, &$count)
         {
 
@@ -95,10 +106,14 @@ class AdminController extends Controller
 
         $round              = new Round();
         $round->started_by  = user()->name;
-        $round->users       = implode(',', $request->input('people'));
         $round->chosen      = $p->user;
+        $round->users       = implode(',', $request->input('people'));
         $round->save();
 
+        // 5) Here you would email the user about it's their time, though we don't actually store an email...
+
+
+        // 4) Log how many times each person has been chosen
         $log = new TeaLog();
         $log->user = $p->user;
         $log->save();

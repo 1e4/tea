@@ -24,3 +24,6 @@ $router->post('add-person', 'AdminController@createPerson')
 
 $router->post('new-round', 'AdminController@createRound')
     ->name('new-round');
+
+$router->post('call-round', 'HomeController@callRound')
+    ->name('call-round');

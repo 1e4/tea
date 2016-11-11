@@ -11,6 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $user = new \App\User();
+        $user->name = 'admin';
+        $user->email = 'admin@ian.pe';
+        $user->password = bcrypt('admin');
+        $user->admin = 1; //Could use Laravels can() but it's a simple app, no need to complicate things
+        $user->save();
     }
 }

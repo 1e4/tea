@@ -6,13 +6,13 @@
             <div class="row">
                 <div class="col-sm-12">
                     @if(count($errors))
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
 
                     @if(session('success'))
@@ -41,7 +41,7 @@
                                 @endforeach
 
 
-                                <input type="submit" class="btn btn-primary" value="I want a drink!">
+                                <input type="submit" class="btn btn-primary" value="Start a new round!">
                             </form>
                         </div>
                     </div>
@@ -98,10 +98,47 @@
             </div>
             <div class="col-md-8">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Dashboard</div>
+                    <div class="panel-heading">Current tea round</div>
 
                     <div class="panel-body">
-                        You are logged in!
+
+                        @if(!$round)
+                            There are no rounds currently
+                        @else
+
+                            <h2 class="text-center">{{ $round->chosen }} <br /><small> has been chosen to make the round</small></h2>
+                            <div class="text-center">{{ $round->created_at->diffForHumans() }}</div>
+
+                            <div class="text-center">
+                                <form action="{{ route('call-round') }}">
+                                    {!! csrf_field() !!}
+                                    <input type="submit" value="Call for a new round" />
+                                </form>
+                            </div>
+
+                            <table class="table table-stripled">
+                                <thead>
+                                <tr>
+                                    <th>Person</th>
+                                    <th>Drink</th>
+                                    <th>Sugar</th>
+                                    <th>Milk</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($round->users as $user)
+                                    <tr>
+                                        <td>{{ $user->user }}</td>
+                                        <td>{{ $user->drink }}</td>
+                                        <td>{{ $user->sugar }}</td>
+                                        <td>{{ $user->milk }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+
+
                     </div>
                 </div>
             </div>

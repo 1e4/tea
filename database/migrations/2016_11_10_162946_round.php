@@ -18,7 +18,6 @@ class Round extends Migration
             $blueprint->increments('id');
             $blueprint->string('started_by'); //Who started the round
             $blueprint->string('chosen'); //Who is chosen
-            $blueprint->text('users'); //Command deliminated users
             $blueprint->timestamps();
         });
     }
