@@ -53,6 +53,9 @@ class AdminController extends Controller
 
         $length = count($people);
 
+        if($length < 1)
+            return back()->withErrors(['Invalid people selected, try adding someone first']);
+
         $count = 0;
 
         // The randomizer
@@ -68,7 +71,7 @@ class AdminController extends Controller
             $person = $people[rand(0, $length - 1)];
 
             //Get their info
-            $p = Drinks::where('user', '=', $person)->first();
+            $p = Drinks::where('user', '=', $person)->firstOrFail();
 
             // Give them a time
             switch($p->busy)
