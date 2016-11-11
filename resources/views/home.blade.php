@@ -67,7 +67,6 @@
                                 <div class="form-group">
                                     <label>How many teaspoons of sugar?</label>
                                     <select name="sugar" class="form-control">
-                                        <option value="99">99</option>
                                         @for($i=0;$i<6;$i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
